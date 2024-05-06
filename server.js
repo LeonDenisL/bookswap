@@ -55,6 +55,33 @@ app.post("/register", (req, res) => {
   });
 });
 
+// Rota para lidar com o login de usuários
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+
+  // Consultar o banco de dados para verificar as credenciais do usuário
+  connection.query(
+    "SELECT * FROM Users WHERE Email = ? AND Password = ?",
+    [email, password],
+    (err, results) => {
+      if (err) {
+        console.error("Erro ao consultar o banco de dados:", err);
+        res.status(500).send("Erro ao processar a solicitação");
+        return;
+      }
+
+      // Verificar se o usuário foi encontrado
+      if (results.length > 0) {
+        // Usuário autenticado com sucesso
+        res.status(200).send("Login bem-sucedido");
+      } else {
+        // Credenciais inválidas
+        res.status(401).send("Credenciais inválidas");
+      }
+    }
+  );
+});
+
 // Iniciar o servidor
 app.listen(port, () => {
   console.log(`Servidor Node.js em execução em http://localhost:${port}`);
