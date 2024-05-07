@@ -82,6 +82,50 @@ app.post("/login", (req, res) => {
   );
 });
 
+// Rota para lidar com o registro de livros
+app.post("/register-book", (req, res) => {
+  const {
+    title,
+    author,
+    publisher,
+    publicationYear,
+    genre,
+    synopsis,
+    condition,
+    coverImageURL,
+  } = req.body;
+
+  // Verificar se o usuário está autenticado
+  if (!req.session || !req.session.UserID) {
+    return res.status(401).send("Usuário não autenticado");
+  }
+
+  const ownerID = req.session.UserID;
+
+  const newBook = {
+    Title: title,
+    Author: author,
+    Publisher: publisher,
+    PublicationYear: publicationYear,
+    Genre: genre,
+    Synopsis: synopsis,
+    Condition: condition,
+    CoverImageURL: coverImageURL,
+    OwnerID: ownerID, // Usar o UserID do usuário logado como ownerID
+  };
+
+  // Inserir novo livro no banco de dados
+  connection.query("INSERT INTO Books SET ?", newBook, (err, result) => {
+    if (err) {
+      console.error("Erro ao inserir livro:", err);
+      res.status(500).send("Erro ao cadastrar livro");
+      return;
+    }
+    console.log("Novo livro cadastrado com sucesso");
+    res.status(200).send("Livro cadastrado com sucesso");
+  });
+});
+
 // Iniciar o servidor
 app.listen(port, () => {
   console.log(`Servidor Node.js em execução em http://localhost:${port}`);

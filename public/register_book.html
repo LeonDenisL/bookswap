@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookSwap - Register Book</title>
+  </head>
+  <body>
+    <h2>Register a Book</h2>
+    <form action="/register-book" method="POST">
+      <div>
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required />
+      </div>
+      <div>
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required />
+      </div>
+      <div>
+        <label for="publisher">Publisher:</label>
+        <input type="text" id="publisher" name="publisher" />
+      </div>
+      <div>
+        <label for="publicationYear">Publication Year:</label>
+        <input type="number" id="publicationYear" name="publicationYear" />
+      </div>
+      <div>
+        <label for="genre">Genre:</label>
+        <input type="text" id="genre" name="genre" />
+      </div>
+      <div>
+        <label for="synopsis">Synopsis:</label>
+        <textarea id="synopsis" name="synopsis" required></textarea>
+      </div>
+      <div>
+        <label for="condition">Condition:</label>
+        <select id="condition" name="condition" required>
+          <option value="New">New</option>
+          <option value="Used">Used</option>
+          <option value="Like New">Like New</option>
+          <option value="Good">Good</option>
+          <option value="Acceptable">Acceptable</option>
+        </select>
+      </div>
+      <div>
+        <label for="coverImageURL">Cover Image URL:</label>
+        <input type="text" id="coverImageURL" name="coverImageURL" />
+      </div>
+      <button type="submit">Register</button>
+    </form>
+  </body>
+</html>
