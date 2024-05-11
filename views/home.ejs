@@ -11,7 +11,7 @@
     <!-- Categoria de Novos Livros -->
     <h2>Novos Livros</h2>
     <div>
-      <% if (newBooks.length > 0) { %> <% newBooks.forEach(book => { %>
+      <% if (newBooks.length > 0) { %> <% newBooks.forEach(function(book) { %>
       <div>
         <h3><%= book.Title %></h3>
         <p>Autor: <%= book.Author %></p>
@@ -26,8 +26,8 @@
     <!-- Categoria Combina com Você -->
     <h2>Combina com Você</h2>
     <div>
-      <% if (recommendedBooks.length > 0) { %> <% recommendedBooks.forEach(book
-      => { %>
+      <% if (recommendedBooks.length > 0) { %> <%
+      recommendedBooks.forEach(function(book) { %>
       <div>
         <h3><%= book.Title %></h3>
         <p>Autor: <%= book.Author %></p>

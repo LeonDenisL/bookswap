@@ -19,7 +19,7 @@ const connection = mysql.createConnection({
 // Configuração da sessão
 app.use(
   session({
-    secret: "secreto", // Chave secreta para assinar a sessão (mantenha isso seguro em produção)
+    secret: "secreto",
     resave: false,
     saveUninitialized: true,
   })
