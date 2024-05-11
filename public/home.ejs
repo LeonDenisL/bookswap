@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookSwap - Home</title>
+  </head>
+  <body>
+    <h1>Bem-vindo ao BookSwap!</h1>
+
+    <!-- Categoria de Novos Livros -->
+    <h2>Novos Livros</h2>
+    <div>
+      <% if (newBooks.length > 0) { %> <% newBooks.forEach(book => { %>
+      <div>
+        <h3><%= book.Title %></h3>
+        <p>Autor: <%= book.Author %></p>
+        <p>Editora: <%= book.Publisher %></p>
+        <!-- Adicione mais detalhes conforme necessário -->
+      </div>
+      <% }); %> <% } else { %>
+      <p>Nenhum livro novo disponível no momento.</p>
+      <% } %>
+    </div>
+
+    <!-- Categoria Combina com Você -->
+    <h2>Combina com Você</h2>
+    <div>
+      <% if (recommendedBooks.length > 0) { %> <% recommendedBooks.forEach(book
+      => { %>
+      <div>
+        <h3><%= book.Title %></h3>
+        <p>Autor: <%= book.Author %></p>
+        <p>Editora: <%= book.Publisher %></p>
+        <!-- Adicione mais detalhes conforme necessário -->
+      </div>
+      <% }); %> <% } else { %>
+      <p>Nenhum livro recomendado disponível no momento.</p>
+      <% } %>
+    </div>
+
+    <!-- Carrossel de Livros -->
+    <h2>Carrossel de Livros</h2>
+    <div>
+      <!-- Adicione um carrossel com os últimos 5 livros -->
+      <% if (carouselBooks.length > 0) { %>
+      <!-- Exiba os livros do carrossel aqui -->
+      <% } else { %>
+      <p>Nenhum livro disponível para o carrossel.</p>
+      <% } %>
+    </div>
+  </body>
+</html>

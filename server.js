@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
+const session = require("express-session");
+const ejs = require("ejs");
 const path = require("path");
 
 const app = express();
@@ -13,6 +15,15 @@ const connection = mysql.createConnection({
   password: "03091997",
   database: "bookswap",
 });
+
+// Configuração da sessão
+app.use(
+  session({
+    secret: "secreto", // Chave secreta para assinar a sessão (mantenha isso seguro em produção)
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 // Conectar ao banco de dados
 connection.connect((err) => {
@@ -28,6 +39,45 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Middleware para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, "public")));
+
+// Configurar o mecanismo de visualização para EJS
+app.set("view engine", "ejs");
+
+// Rota para a página inicial
+app.get("/", (req, res) => {
+  // Lógica para obter os últimos livros cadastrados
+  connection.query(
+    "SELECT * FROM Books ORDER BY BookID DESC LIMIT 5",
+    (err, newBooks) => {
+      if (err) {
+        console.error("Erro ao obter novos livros:", err);
+        res.status(500).send("Erro ao carregar a página");
+        return;
+      }
+
+      // Lógica para obter os livros recomendados
+      // Se o usuário estiver autenticado, use a categoria favorita dele para recomendações
+      // Caso contrário, obtenha livros aleatórios
+      // Substitua a lógica abaixo com a sua implementação real
+      const recommendedBooks = []; // Aqui você deve obter os livros recomendados
+
+      // Lógica para obter os últimos 5 livros para o carrossel
+      connection.query(
+        "SELECT * FROM Books ORDER BY BookID DESC LIMIT 5",
+        (err, carouselBooks) => {
+          if (err) {
+            console.error("Erro ao obter livros para o carrossel:", err);
+            res.status(500).send("Erro ao carregar a página");
+            return;
+          }
+
+          // Renderizar a página home com os dados obtidos
+          res.render("home", { newBooks, recommendedBooks, carouselBooks });
+        }
+      );
+    }
+  );
+});
 
 // Rota para lidar com o cadastro de usuários
 app.post("/register", (req, res) => {
@@ -72,6 +122,8 @@ app.post("/login", (req, res) => {
 
       // Verificar se o usuário foi encontrado
       if (results.length > 0) {
+        // Armazenar UserID na sessão
+        req.session.UserID = results[0].UserID;
         // Usuário autenticado com sucesso
         res.status(200).send("Login bem-sucedido");
       } else {
@@ -91,7 +143,7 @@ app.post("/register-book", (req, res) => {
     publicationYear,
     genre,
     synopsis,
-    condition,
+    bookCondition,
     coverImageURL,
   } = req.body;
 
@@ -109,7 +161,7 @@ app.post("/register-book", (req, res) => {
     PublicationYear: publicationYear,
     Genre: genre,
     Synopsis: synopsis,
-    Condition: condition,
+    BookCondition: bookCondition, // Corrigido para BookCondition
     CoverImageURL: coverImageURL,
     OwnerID: ownerID, // Usar o UserID do usuário logado como ownerID
   };
