@@ -56,25 +56,38 @@ app.get("/", (req, res) => {
       }
 
       // Lógica para obter os livros recomendados
-      // Se o usuário estiver autenticado, use a categoria favorita dele para recomendações
-      // Caso contrário, obtenha livros aleatórios
-      // Substitua a lógica abaixo com a sua implementação real
-      const recommendedBooks = []; // Aqui você deve obter os livros recomendados
+      let recommendedBooksQuery = "";
+      if (req.session && req.session.UserID) {
+        // Se o usuário estiver autenticado, obtenha os livros do gênero favorito do usuário
+        const userID = req.session.UserID;
+        recommendedBooksQuery = `SELECT * FROM Books WHERE Genre IN (SELECT FavoriteGenre FROM Users WHERE UserID = ${userID}) ORDER BY BookID DESC LIMIT 5`;
+      } else {
+        // Caso contrário, obtenha livros aleatórios
+        recommendedBooksQuery = "SELECT * FROM Books ORDER BY RAND() LIMIT 5";
+      }
 
-      // Lógica para obter os últimos 5 livros para o carrossel
-      connection.query(
-        "SELECT * FROM Books ORDER BY BookID DESC LIMIT 5",
-        (err, carouselBooks) => {
-          if (err) {
-            console.error("Erro ao obter livros para o carrossel:", err);
-            res.status(500).send("Erro ao carregar a página");
-            return;
-          }
-
-          // Renderizar a página home com os dados obtidos
-          res.render("home", { newBooks, recommendedBooks, carouselBooks });
+      connection.query(recommendedBooksQuery, (err, recommendedBooks) => {
+        if (err) {
+          console.error("Erro ao obter livros recomendados:", err);
+          res.status(500).send("Erro ao carregar a página");
+          return;
         }
-      );
+
+        // Lógica para obter os últimos 5 livros para o carrossel
+        connection.query(
+          "SELECT * FROM Books ORDER BY BookID DESC LIMIT 5",
+          (err, carouselBooks) => {
+            if (err) {
+              console.error("Erro ao obter livros para o carrossel:", err);
+              res.status(500).send("Erro ao carregar a página");
+              return;
+            }
+
+            // Renderizar a página home com os dados obtidos
+            res.render("home", { newBooks, recommendedBooks, carouselBooks });
+          }
+        );
+      });
     }
   );
 });
