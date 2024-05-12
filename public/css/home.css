@@ -1,0 +1,56 @@
+/* Estilos para o layout da página */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background-color: #333;
+  padding: 10px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  margin-right: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.navbar a:hover {
+  background-color: #555;
+}
+
+h1,
+h2 {
+  color: #333;
+}
+
+/* Estilos para os livros */
+
+.books {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none; /* Remover barras de rolagem do navegador Firefox */
+  -ms-overflow-style: none; /* Remover barras de rolagem do navegador Internet Explorer */
+}
+
+.books::-webkit-scrollbar {
+  display: none; /* Remover barras de rolagem do navegador Chrome, Safari, Edge */
+}
+
+.book {
+  width: calc(20% - 20px);
+  margin-right: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.book img {
+  height: 350px;
+}
