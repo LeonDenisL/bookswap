@@ -1,19 +1,29 @@
 .carousel-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px; /* Adiciona um espaçamento entre os itens do carrossel */
-  width: 800px; /* Define a largura total do item do carrossel */
-}
-
-.carousel-item-image {
-  flex: 1; /* Ocupa o restante do espaço disponível */
+  display: flex; /* Mantém o layout flex para alinhamento vertical */
+  flex-direction: column; /* Alinha os itens na vertical */
+  justify-content: center; /* Centraliza verticalmente */
+  align-items: center; /* Centraliza horizontalmente */
+  margin-bottom: 20px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .carousel-item img {
-  height: 300px;
+  width: auto;
+  height: 450px;
+  object-fit: cover; /* Mantém a proporção da imagem e cobre o espaço disponível */
+  margin: 0 auto; /* Centraliza horizontalmente */
+  box-shadow: 0px 0px 55px rgba(0, 0, 0, 0.5); /* Adiciona uma sombra à imagem */
 }
 
 .carousel-item-info {
-  flex: 2; /* Ocupa o dobro do espaço da imagem */
-  padding: 0 20px; /* Adiciona um espaçamento interno */
+  padding: 10px;
+  text-align: center;
+}
+
+.carousel-item-info h3,
+.carousel-item-info p {
+  margin: 0;
 }
