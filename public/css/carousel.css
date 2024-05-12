@@ -1,0 +1,19 @@
+.carousel-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px; /* Adiciona um espaçamento entre os itens do carrossel */
+  width: 800px; /* Define a largura total do item do carrossel */
+}
+
+.carousel-item-image {
+  flex: 1; /* Ocupa o restante do espaço disponível */
+}
+
+.carousel-item img {
+  height: 300px;
+}
+
+.carousel-item-info {
+  flex: 2; /* Ocupa o dobro do espaço da imagem */
+  padding: 0 20px; /* Adiciona um espaçamento interno */
+}
