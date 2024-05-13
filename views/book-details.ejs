@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalhes do Livro</title>
+    <link rel="stylesheet" href="/css/home.css" />
+  </head>
+  <body>
+    <h1>Detalhes do Livro</h1>
+    <div class="book-details">
+      <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
+      <h2><%= book.Title %></h2>
+      <p>Autor: <%= book.Author %></p>
+      <p>Editora: <%= book.Publisher %></p>
+      <p>Ano de Publicação: <%= book.PublicationYear %></p>
+      <p>Condição: <%= book.BookCondition %></p>
+      <p>Sinopse: <%= book.Synopsis %></p>
+    </div>
+
+    <% if (userBooks.length > 0) { %>
+    <h2>Selecione um livro para trocar:</h2>
+    <form action="/trade-book" method="post">
+      <select name="tradeBookID">
+        <% userBooks.forEach(function(userBook) { %>
+        <option value="<%= userBook.BookID %>"><%= userBook.Title %></option>
+        <% }); %>
+      </select>
+      <input type="hidden" name="requestedBookID" value="<%= book.BookID %>" />
+      <button type="submit">Propor Troca</button>
+    </form>
+    <% } else { %>
+    <p>
+      Você não tem livros para trocar.
+      <a href="/publish-book">Publicar um livro</a>
+    </p>
+    <% } %>
+  </body>
+</html>

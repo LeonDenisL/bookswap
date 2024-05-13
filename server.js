@@ -34,6 +34,10 @@ connection.connect((err) => {
   console.log("Conexão ao banco de dados estabelecida com sucesso");
 });
 
+app.get("/login", (req, res) => {
+  res.render("login"); // Garanta que existe um arquivo login.ejs no diretório de views
+});
+
 // Middleware para analisar corpos de requisição
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -45,7 +49,6 @@ app.set("view engine", "ejs");
 
 // Rota para a página inicial
 app.get("/", (req, res) => {
-  // Lógica para obter os últimos livros cadastrados
   connection.query(
     "SELECT * FROM Books ORDER BY BookID DESC LIMIT 5",
     (err, newBooks) => {
@@ -54,16 +57,10 @@ app.get("/", (req, res) => {
         res.status(500).send("Erro ao carregar a página");
         return;
       }
-
-      // Lógica para obter os livros recomendados
-      let recommendedBooksQuery = "";
+      let recommendedBooksQuery = "SELECT * FROM Books ORDER BY RAND() LIMIT 5";
       if (req.session && req.session.UserID) {
-        // Se o usuário estiver autenticado, obtenha os livros do gênero favorito do usuário
         const userID = req.session.UserID;
         recommendedBooksQuery = `SELECT * FROM Books WHERE Genre IN (SELECT FavoriteGenre FROM Users WHERE UserID = ${userID}) ORDER BY BookID DESC LIMIT 5`;
-      } else {
-        // Caso contrário, obtenha livros aleatórios
-        recommendedBooksQuery = "SELECT * FROM Books ORDER BY RAND() LIMIT 5";
       }
 
       connection.query(recommendedBooksQuery, (err, recommendedBooks) => {
@@ -72,8 +69,6 @@ app.get("/", (req, res) => {
           res.status(500).send("Erro ao carregar a página");
           return;
         }
-
-        // Lógica para obter os últimos 5 livros para o carrossel
         connection.query(
           "SELECT * FROM Books ORDER BY BookID DESC LIMIT 5",
           (err, carouselBooks) => {
@@ -82,12 +77,184 @@ app.get("/", (req, res) => {
               res.status(500).send("Erro ao carregar a página");
               return;
             }
-
-            // Renderizar a página home com os dados obtidos
-            res.render("home", { newBooks, recommendedBooks, carouselBooks });
+            // Aqui você passa o objeto 'user' se o usuário estiver logado
+            res.render("home", {
+              newBooks,
+              recommendedBooks,
+              carouselBooks,
+              user: req.session.UserID ? { UserID: req.session.UserID } : null,
+            });
           }
         );
       });
+    }
+  );
+});
+
+// Rota para visualizar detalhes do livro
+app.get("/book-details/:bookID", (req, res) => {
+  if (!req.session.UserID) {
+    res.redirect("/login");
+    return;
+  }
+
+  const bookID = req.params.bookID;
+  connection.query(
+    "SELECT * FROM Books WHERE BookID = ?",
+    [bookID],
+    (err, results) => {
+      if (err || results.length === 0) {
+        res.status(500).send("Erro ao buscar detalhes do livro");
+        return;
+      }
+
+      const book = results[0];
+      connection.query(
+        "SELECT * FROM Books WHERE OwnerID = ?",
+        [req.session.UserID],
+        (err, userBooks) => {
+          if (err) {
+            res.status(500).send("Erro ao buscar seus livros");
+            return;
+          }
+          res.render("book-details", { book, userBooks });
+        }
+      );
+    }
+  );
+});
+
+// Rota para lidar com a proposta de troca de livros
+app.post("/trade-book", (req, res) => {
+  if (!req.session || !req.session.UserID) {
+    return res.status(401).send("Usuário não autenticado");
+  }
+
+  const { tradeBookID, requestedBookID } = req.body;
+  const buyerID = req.session.UserID;
+
+  // Verificar se o livro oferecido para troca pertence ao usuário logado
+  connection.query(
+    "SELECT * FROM Books WHERE BookID = ? AND OwnerID = ?",
+    [tradeBookID, buyerID],
+    (err, tradeBooks) => {
+      if (err) {
+        console.error("Erro ao verificar o livro para troca:", err);
+        return res.status(500).send("Erro ao processar a troca");
+      }
+      if (tradeBooks.length === 0) {
+        return res.status(400).send("Livro para troca não pertence ao usuário");
+      }
+
+      // Verificar se o livro solicitado existe e obter o OwnerID para definir como SellerID
+      connection.query(
+        "SELECT * FROM Books WHERE BookID = ?",
+        [requestedBookID],
+        (err, requestedBooks) => {
+          if (err) {
+            console.error("Erro ao verificar o livro solicitado:", err);
+            return res.status(500).send("Erro ao processar a troca");
+          }
+          if (requestedBooks.length === 0) {
+            return res.status(400).send("Livro solicitado não encontrado");
+          }
+
+          const sellerID = requestedBooks[0].OwnerID;
+
+          // Criar uma nova transação com status 'Pending'
+          const newTransaction = {
+            BuyerID: buyerID,
+            SellerID: sellerID,
+            BookID: requestedBookID,
+            TransactionDateTime: new Date(),
+            TransactionType: "Trade",
+            TransactionStatus: "Pending",
+          };
+
+          // Inserir a transação no banco de dados
+          connection.query(
+            "INSERT INTO Transactions SET ?",
+            newTransaction,
+            (err, result) => {
+              if (err) {
+                console.error("Erro ao registrar a troca:", err);
+                return res.status(500).send("Erro ao registrar a troca");
+              }
+              res.send("Proposta de troca enviada com sucesso!");
+            }
+          );
+        }
+      );
+    }
+  );
+});
+
+//Rota para perfil
+app.get("/profile", (req, res) => {
+  if (!req.session.UserID) {
+    return res.redirect("/login");
+  }
+
+  const userID = req.session.UserID;
+  connection.query(
+    "SELECT * FROM Users WHERE UserID = ?",
+    [userID],
+    (err, userResults) => {
+      if (err) {
+        return res.status(500).send("Erro ao buscar informações do usuário.");
+      }
+      const user = userResults[0];
+
+      // Buscar livros publicados pelo usuário
+      connection.query(
+        "SELECT * FROM Books WHERE OwnerID = ?",
+        [userID],
+        (err, booksResults) => {
+          if (err) {
+            return res.status(500).send("Erro ao buscar livros do usuário.");
+          }
+
+          // Buscar transações de troca
+          connection.query(
+            "SELECT * FROM Transactions WHERE BuyerID = ? OR SellerID = ?",
+            [userID, userID],
+            (err, transactionsResults) => {
+              if (err) {
+                return res.status(500).send("Erro ao buscar transações.");
+              }
+
+              // Renderizar a página de perfil
+              res.render("profile", {
+                user,
+                books: booksResults,
+                transactions: transactionsResults,
+              });
+            }
+          );
+        }
+      );
+    }
+  );
+});
+
+app.post("/update-profile-picture", (req, res) => {
+  if (!req.session || !req.session.UserID) {
+    return res.status(401).send("Usuário não autenticado.");
+  }
+
+  const userID = req.session.UserID;
+  const profilePictureURL = req.body.profilePictureURL; // O link para a foto de perfil enviado pelo usuário
+
+  // Atualizar a URL da foto de perfil no banco de dados
+  connection.query(
+    "UPDATE Users SET ProfilePictureURL = ? WHERE UserID = ?",
+    [profilePictureURL, userID],
+    (err, results) => {
+      if (err) {
+        console.error("Erro ao atualizar a foto de perfil:", err);
+        return res.status(500).send("Erro ao atualizar a foto de perfil.");
+      }
+      res.redirect("/profile"); // Redireciona de volta para o perfil
     }
   );
 });
@@ -113,7 +280,6 @@ app.post("/register", (req, res) => {
       res.status(500).send("Erro ao cadastrar usuário");
       return;
     }
-    console.log("Novo usuário cadastrado com sucesso");
     res.status(200).send("Usuário cadastrado com sucesso");
   });
 });
@@ -128,7 +294,6 @@ app.post("/login", (req, res) => {
     [email, password],
     (err, results) => {
       if (err) {
-        console.error("Erro ao consultar o banco de dados:", err);
         res.status(500).send("Erro ao processar a solicitação");
         return;
       }
@@ -137,10 +302,8 @@ app.post("/login", (req, res) => {
       if (results.length > 0) {
         // Armazenar UserID na sessão
         req.session.UserID = results[0].UserID;
-        // Usuário autenticado com sucesso
-        res.status(200).send("Login bem-sucedido");
+        res.redirect("/"); // Redireciona para a página inicial após login bem-sucedido
       } else {
-        // Credenciais inválidas
         res.status(401).send("Credenciais inválidas");
       }
     }
@@ -162,7 +325,8 @@ app.post("/register-book", (req, res) => {
 
   // Verificar se o usuário está autenticado
   if (!req.session || !req.session.UserID) {
-    return res.status(401).send("Usuário não autenticado");
+    res.status(401).send("Usuário não autenticado");
+    return;
   }
 
   const ownerID = req.session.UserID;
@@ -174,9 +338,9 @@ app.post("/register-book", (req, res) => {
     PublicationYear: publicationYear,
     Genre: genre,
     Synopsis: synopsis,
-    BookCondition: bookCondition, // Corrigido para BookCondition
+    BookCondition: bookCondition,
     CoverImageURL: coverImageURL,
-    OwnerID: ownerID, // Usar o UserID do usuário logado como ownerID
+    OwnerID: ownerID,
   };
 
   // Inserir novo livro no banco de dados
@@ -186,8 +350,17 @@ app.post("/register-book", (req, res) => {
       res.status(500).send("Erro ao cadastrar livro");
       return;
     }
-    console.log("Novo livro cadastrado com sucesso");
-    res.status(200).send("Livro cadastrado com sucesso");
+    res.redirect("/"); // Redireciona para a página inicial após o registro bem-sucedido do livro
+  });
+});
+
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.redirect("/"); // Direciona para a home se houver erro ao deslogar
+    }
+    res.clearCookie("connect.sid"); // Limpar o cookie da sessão
+    res.redirect("/login");
   });
 });
 
