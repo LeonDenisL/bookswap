@@ -34,8 +34,27 @@ connection.connect((err) => {
   console.log("Conexão ao banco de dados estabelecida com sucesso");
 });
 
+// Middleware para adicionar usuário a todas as respostas
+app.use((req, res, next) => {
+  res.locals.user = req.session.UserID ? { UserID: req.session.UserID } : null;
+  next();
+});
+
 app.get("/login", (req, res) => {
   res.render("login"); // Garanta que existe um arquivo login.ejs no diretório de views
+});
+// Rota para exibir a página de registro
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
+// Rota para exibir a página de registro de livros
+app.get("/publish-book", (req, res) => {
+  if (!req.session || !req.session.UserID) {
+    return res.redirect("/login"); // Redireciona para login se não estiver logado
+  }
+
+  res.render("register_book"); // Certifique-se de ter um arquivo register_book.ejs
 });
 
 // Middleware para analisar corpos de requisição

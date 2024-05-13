@@ -5,9 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Perfil de <%= user.Name %></title>
     <link rel="stylesheet" href="/css/home.css" />
+    <link rel="stylesheet" href="/css/carousel.css" />
     <!-- Ajuste o caminho conforme necessário -->
   </head>
   <body>
+    <nav class="navbar">
+      <a href="/" class="btn">Home</a>
+      <% if (user) { %>
+      <a href="/profile" class="btn">Perfil</a>
+      <% } %>
+
+      <a href="/publish-book" class="btn">Publicar Livro</a>
+
+      <% if (!user) { %>
+      <a href="/login" class="btn">Login</a>
+      <a href="/register" class="btn">Registrar</a>
+      <% } %> <% if (user) { %>
+      <a href="/logout" class="btn">Logout</a>
+      <% } %>
+    </nav>
     <h1>Bem-vindo, <%= user.Name %>!</h1>
     <img
       src="<%= user.ProfilePictureURL %>"
@@ -27,9 +43,12 @@
     </form>
 
     <h2>Seus Livros Publicados</h2>
-    <div>
+    <div class="books">
       <% books.forEach(function(book) { %>
-      <div>
+      <div class="book">
+        <a href="/book-details/<%= book.BookID %>">
+        <!-- Adicionando link para detalhes do livro -->
+        <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
         <h3><%= book.Title %></h3>
         <p>Autor: <%= book.Author %></p>
         <p>Publicado por: <%= book.Publisher %></p>
