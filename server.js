@@ -208,52 +208,51 @@ app.post("/trade-book", (req, res) => {
   );
 });
 
-//Rota para perfil
 app.get("/profile", (req, res) => {
-  if (!req.session.UserID) {
+  const userID = req.session.UserID;
+  if (!userID) {
     return res.redirect("/login");
   }
 
-  const userID = req.session.UserID;
-  connection.query(
-    "SELECT * FROM Users WHERE UserID = ?",
-    [userID],
-    (err, userResults) => {
+  const userInfoQuery = "SELECT * FROM Users WHERE UserID = ?";
+  const booksQuery = "SELECT * FROM Books WHERE OwnerID = ?";
+  const transactionsQuery = `SELECT t.*, b.Title AS BookTitle
+                             FROM Transactions t
+                             JOIN Books b ON t.BookID = b.BookID
+                             WHERE t.BuyerID = ? OR t.SellerID = ?`;
+
+  connection.query(userInfoQuery, [userID], (err, userResults) => {
+    if (err) {
+      console.error("Erro ao buscar informações do usuário:", err);
+      return res.status(500).send("Erro ao buscar informações do usuário.");
+    }
+    const user = userResults[0];
+
+    connection.query(booksQuery, [userID], (err, booksResults) => {
       if (err) {
-        return res.status(500).send("Erro ao buscar informações do usuário.");
+        console.error("Erro ao buscar livros do usuário:", err);
+        return res.status(500).send("Erro ao buscar livros do usuário.");
       }
-      const user = userResults[0];
 
-      // Buscar livros publicados pelo usuário
       connection.query(
-        "SELECT * FROM Books WHERE OwnerID = ?",
-        [userID],
-        (err, booksResults) => {
+        transactionsQuery,
+        [userID, userID],
+        (err, transactionsResults) => {
           if (err) {
-            return res.status(500).send("Erro ao buscar livros do usuário.");
+            console.error("Erro ao buscar transações:", err);
+            return res.status(500).send("Erro ao buscar transações.");
           }
+          console.log(transactionsResults); // Verificar os dados retornados
 
-          // Buscar transações de troca
-          connection.query(
-            "SELECT * FROM Transactions WHERE BuyerID = ? OR SellerID = ?",
-            [userID, userID],
-            (err, transactionsResults) => {
-              if (err) {
-                return res.status(500).send("Erro ao buscar transações.");
-              }
-
-              // Renderizar a página de perfil
-              res.render("profile", {
-                user,
-                books: booksResults,
-                transactions: transactionsResults,
-              });
-            }
-          );
+          res.render("profile", {
+            user,
+            books: booksResults,
+            transactions: transactionsResults,
+          });
         }
       );
-    }
-  );
+    });
+  });
 });
 
 app.post("/update-profile-picture", (req, res) => {
