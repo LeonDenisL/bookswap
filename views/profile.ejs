@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil de <%= user.Name %></title>
+    <link rel="stylesheet" href="/css/home.css" />
+    <link rel="stylesheet" href="/css/carousel.css" />
+    <!-- Ajuste o caminho conforme necessário -->
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="/" class="btn">Home</a>
+      <% if (user) { %>
+      <a href="/profile" class="btn">Perfil</a>
+      <% } %>
+
+      <a href="/publish-book" class="btn">Publicar Livro</a>
+
+      <% if (!user) { %>
+      <a href="/login" class="btn">Login</a>
+      <a href="/register" class="btn">Registrar</a>
+      <% } %> <% if (user) { %>
+      <a href="/logout" class="btn">Logout</a>
+      <% } %>
+    </nav>
+    <h1>Bem-vindo, <%= user.Name %>!</h1>
+    <img
+      src="<%= user.ProfilePictureURL %>"
+      alt="Foto de perfil"
+      style="width: 150px; height: auto"
+    />
+    <form action="/update-profile-picture" method="post">
+      <label for="profilePictureURL">Link da Foto de Perfil:</label>
+      <input
+        type="url"
+        id="profilePictureURL"
+        name="profilePictureURL"
+        placeholder="Insira o link aqui"
+        required
+      />
+      <button type="submit">Atualizar Foto</button>
+    </form>
+
+    <h2>Seus Livros Publicados</h2>
+    <div class="books">
+      <% books.forEach(function(book) { %>
+      <div class="book">
+        <a href="/book-details/<%= book.BookID %>">
+        <!-- Adicionando link para detalhes do livro -->
+        <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
+        <h3><%= book.Title %></h3>
+        <p>Autor: <%= book.Author %></p>
+        <p>Publicado por: <%= book.Publisher %></p>
+        <!-- Adicione mais informações conforme necessário -->
+      </div>
+      <% }); %>
+    </div>
+
+    <h2>Suas Notificações</h2>
+<div>
+  <% transactions.forEach(function(transaction) {
+    if (transaction.SellerID === user.UserID && transaction.TransactionStatus === 'Pending') { %>
+      <div>
+        <p>
+          Proposta de troca para o livro: "<%= transaction.BookTitle %>" - Status: <%= transaction.TransactionStatus %>
+        </p>
+        <form action="/respond-to-trade" method="post">
+          <input type="hidden" name="transactionID" value="<%= transaction.TransactionID %>"/>
+          <button type="submit" name="response" value="accept">Aceitar</button>
+          <button type="submit" name="response" value="reject">Recusar</button>
+        </form>
+      </div>
+    <% }
+  }); %>
+</div>
+
+<h2>Suas Trocas</h2>
+<div>
+  <% transactions.forEach(function(transaction) {
+    if (transaction.BuyerID === user.UserID && transaction.TransactionStatus === 'Pending') { %>
+      <div>
+        <p>
+          Sua proposta de troca para o livro: "<%= transaction.BookTitle %>" - Status: <%= transaction.TransactionStatus %>
+        </p>
+        <form action="/cancel-trade" method="post">
+          <input type="hidden" name="transactionID" value="<%= transaction.TransactionID %>"/>
+          <button type="submit">Cancelar</button>
+        </form>
+      </div>
+    <% }
+  }); %>
+</div>
+
+    
+
+    <h2>Histórico de Trocas</h2>
+    <div>
+      <% transactions.forEach(function(transaction) { if ((transaction.BuyerID
+      === user.UserID || transaction.SellerID === user.UserID) &&
+      transaction.TransactionStatus === 'Completed') { %>
+      <div>
+        <p>
+          Troca completada para o livro: <%= transaction.BookID %> - Data: <%=
+          transaction.TransactionDateTime %>
+        </p>
+      </div>
+      <% } }); %>
+    </div>
+  </body>
+</html>
