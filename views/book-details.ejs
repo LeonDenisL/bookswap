@@ -37,14 +37,16 @@
     <% if (userBooks.length > 0) { %>
     <h2>Selecione um livro para trocar:</h2>
     <form action="/trade-book" method="post">
-      <select name="tradeBookID">
-        <% userBooks.forEach(function(userBook) { %>
-        <option value="<%= userBook.BookID %>"><%= userBook.Title %></option>
+      <select name="offeredBookID">
+        <% userBooks.forEach(function(book) { %>
+        <option value="<%= book.BookID %>"><%= book.Title %></option>
         <% }); %>
       </select>
+      <!-- Certifique-se de enviar também o ID do livro atual -->
       <input type="hidden" name="requestedBookID" value="<%= book.BookID %>" />
       <button type="submit">Propor Troca</button>
     </form>
+
     <% } else { %>
     <p>
       Você não tem livros para trocar.

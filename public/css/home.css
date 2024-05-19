@@ -54,3 +54,93 @@ h2 {
 .book img {
   height: 350px;
 }
+
+/* Parte do login */
+
+.area-login {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.login {
+  background: rgb(7, 3, 22);
+
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 355px;
+  height: 320px;
+  padding: 35px;
+}
+
+.login form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.login input {
+  margin-top: 20px;
+  background-color: #42308a;
+  color: #e3e1e9;
+
+  padding-left: 0.625rem;
+  border: none;
+  height: 2.813rem;
+  outline: none;
+  border-radius: 8px;
+}
+
+.login img {
+  width: 70px;
+  height: auto;
+
+  animation: imagem;
+  animation-duration: 5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+input::placeholder {
+  color: #9793c6;
+  font-size: 14px;
+  font-weight: 5px;
+}
+form [type="submit"] {
+  display: block;
+  align-items: center;
+  background: #310ebf;
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+p {
+  color: #7e72b7;
+}
+a {
+  color: #575194;
+  text-decoration: none; /*para remover o tracinho embaixo do nome*/
+  margin-left: 10px;
+}
+a:hover {
+  color: #9a96c7;
+}
+.entra {
+  cursor: pointer;
+}
+.entra:hover {
+  background: #242979;
+}
+
+@keyframes imagem {
+  0% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1.7);
+  }
+}

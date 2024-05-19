@@ -24,6 +24,35 @@
       <% } %>
     </nav>
     <h2>Login to BookSwap</h2>
+
+    <section class="area-login">
+      <div class="login">
+        <div>
+          <img src="TELA/logoo.png" alt="logo" />
+        </div>
+
+        <form action="/login" method="POST">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Insira o email"
+            autofocus
+            required
+          />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Insira a senha"
+            required
+          />
+          <input class="entra" type="submit" value="entrar" />
+          <p>Ainda não possui conta?<a href="/register.html">Criar conta</a></p>
+        </form>
+      </div>
+    </section>
+
     <form action="/login" method="POST">
       <div>
         <label for="email">Email:</label>
