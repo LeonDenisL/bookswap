@@ -110,7 +110,6 @@ app.get("/", (req, res) => {
   );
 });
 
-// Rota para visualizar detalhes do livro
 app.get("/book-details/:bookID", (req, res) => {
   if (!req.session.UserID) {
     res.redirect("/login");
@@ -118,6 +117,9 @@ app.get("/book-details/:bookID", (req, res) => {
   }
 
   const bookID = req.params.bookID;
+  const userID = req.session.UserID;
+
+  // Primeiro busca os detalhes do livro requisitado
   connection.query(
     "SELECT * FROM Books WHERE BookID = ?",
     [bookID],
@@ -128,14 +130,18 @@ app.get("/book-details/:bookID", (req, res) => {
       }
 
       const book = results[0];
+
+      // Depois busca todos os livros do usuário para a seleção de troca
       connection.query(
         "SELECT * FROM Books WHERE OwnerID = ?",
-        [req.session.UserID],
+        [userID],
         (err, userBooks) => {
           if (err) {
             res.status(500).send("Erro ao buscar seus livros");
             return;
           }
+
+          // Renderiza a página de detalhes do livro com os livros do usuário para troca
           res.render("book-details", { book, userBooks });
         }
       );
@@ -143,29 +149,36 @@ app.get("/book-details/:bookID", (req, res) => {
   );
 });
 
-// Rota para lidar com a proposta de troca de livros
 app.post("/trade-book", (req, res) => {
   if (!req.session || !req.session.UserID) {
     return res.status(401).send("Usuário não autenticado");
   }
 
-  const { tradeBookID, requestedBookID } = req.body;
+  const { requestedBookID, offeredBookID } = req.body;
   const buyerID = req.session.UserID;
+
+  console.log("Requested Book ID:", requestedBookID);
+  console.log("Offered Book ID:", offeredBookID); // Verificar se o ID está chegando corretamente
+  console.log("User ID:", buyerID);
+
+  if (!offeredBookID) {
+    return res.status(400).send("Livro oferecido não foi selecionado");
+  }
 
   // Verificar se o livro oferecido para troca pertence ao usuário logado
   connection.query(
     "SELECT * FROM Books WHERE BookID = ? AND OwnerID = ?",
-    [tradeBookID, buyerID],
-    (err, tradeBooks) => {
+    [offeredBookID, buyerID],
+    (err, offeredBooks) => {
       if (err) {
         console.error("Erro ao verificar o livro para troca:", err);
         return res.status(500).send("Erro ao processar a troca");
       }
-      if (tradeBooks.length === 0) {
+      if (offeredBooks.length === 0) {
         return res.status(400).send("Livro para troca não pertence ao usuário");
       }
 
-      // Verificar se o livro solicitado existe e obter o OwnerID para definir como SellerID
+      // Verificar se o livro solicitado existe
       connection.query(
         "SELECT * FROM Books WHERE BookID = ?",
         [requestedBookID],
@@ -185,6 +198,7 @@ app.post("/trade-book", (req, res) => {
             BuyerID: buyerID,
             SellerID: sellerID,
             BookID: requestedBookID,
+            TradeBookID: offeredBookID, // Garanta que este campo está sendo setado corretamente
             TransactionDateTime: new Date(),
             TransactionType: "Trade",
             TransactionStatus: "Pending",
@@ -328,7 +342,6 @@ app.post("/login", (req, res) => {
   );
 });
 
-// Rota para lidar com o registro de livros
 app.post("/register-book", (req, res) => {
   const {
     title,
@@ -337,18 +350,16 @@ app.post("/register-book", (req, res) => {
     publicationYear,
     genre,
     synopsis,
-    bookCondition,
+    condition, // Certifique-se de que o nome do campo corresponde ao 'name' do select no formulário
     coverImageURL,
   } = req.body;
 
-  // Verificar se o usuário está autenticado
   if (!req.session || !req.session.UserID) {
     res.status(401).send("Usuário não autenticado");
     return;
   }
 
   const ownerID = req.session.UserID;
-
   const newBook = {
     Title: title,
     Author: author,
@@ -356,12 +367,11 @@ app.post("/register-book", (req, res) => {
     PublicationYear: publicationYear,
     Genre: genre,
     Synopsis: synopsis,
-    BookCondition: bookCondition,
+    BookCondition: condition, // Este campo deve corresponder ao nome da coluna no banco de dados
     CoverImageURL: coverImageURL,
     OwnerID: ownerID,
   };
 
-  // Inserir novo livro no banco de dados
   connection.query("INSERT INTO Books SET ?", newBook, (err, result) => {
     if (err) {
       console.error("Erro ao inserir livro:", err);
@@ -380,6 +390,52 @@ app.get("/logout", (req, res) => {
     res.clearCookie("connect.sid"); // Limpar o cookie da sessão
     res.redirect("/login");
   });
+});
+
+app.get("/trade-details/:transactionID", (req, res) => {
+  const transactionID = req.params.transactionID;
+
+  connection.query(
+    `SELECT Transactions.*, 
+              b1.Title as RequestedBookTitle, b1.Author as RequestedBookAuthor, b1.CoverImageURL as RequestedBookImage, b1.BookCondition as RequestedBookCondition, b1.Publisher as RequestedBookPublisher, b1.Genre as RequestedBookGenre,
+              b2.Title as OfferedBookTitle, b2.Author as OfferedBookAuthor, b2.CoverImageURL as OfferedBookImage, b2.BookCondition as OfferedBookCondition, b2.Publisher as OfferedBookPublisher, b2.Genre as OfferedBookGenre
+       FROM Transactions 
+       JOIN Books as b1 ON Transactions.BookID = b1.BookID 
+       JOIN Books as b2 ON Transactions.TradeBookID = b2.BookID 
+       WHERE TransactionID = ?`,
+    [transactionID],
+    (err, results) => {
+      if (err) {
+        console.error("Erro ao buscar detalhes da troca:", err);
+        return res.status(500).send("Erro ao buscar detalhes da troca.");
+      }
+      if (results.length > 0) {
+        res.render("trade-details", {
+          transaction: results[0],
+        });
+      } else {
+        res.send("Transação não encontrada.");
+      }
+    }
+  );
+});
+
+app.post("/respond-to-trade/:transactionID", (req, res) => {
+  const { transactionID } = req.params;
+  const response = req.body.response; // 'accept' ou 'reject'
+  const newStatus = response === "accept" ? "Completed" : "Canceled";
+
+  connection.query(
+    "UPDATE Transactions SET TransactionStatus = ? WHERE TransactionID = ?",
+    [newStatus, transactionID],
+    (err, result) => {
+      if (err) {
+        console.error("Erro ao atualizar o status da troca:", err);
+        return res.status(500).send("Erro ao processar a troca");
+      }
+      res.redirect("/profile"); // Redirecione conforme necessário
+    }
+  );
 });
 
 // Iniciar o servidor

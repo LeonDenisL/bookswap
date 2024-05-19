@@ -58,39 +58,33 @@
     </div>
 
     <h2>Suas Notificações</h2>
-<div>
-  <% transactions.forEach(function(transaction) {
-    if (transaction.SellerID === user.UserID && transaction.TransactionStatus === 'Pending') { %>
-      <div>
-        <p>
-          Proposta de troca para o livro: "<%= transaction.BookTitle %>" - Status: <%= transaction.TransactionStatus %>
-        </p>
-        <form action="/respond-to-trade" method="post">
-          <input type="hidden" name="transactionID" value="<%= transaction.TransactionID %>"/>
-          <button type="submit" name="response" value="accept">Aceitar</button>
-          <button type="submit" name="response" value="reject">Recusar</button>
-        </form>
-      </div>
-    <% }
-  }); %>
-</div>
-
-<h2>Suas Trocas</h2>
-<div>
-  <% transactions.forEach(function(transaction) {
-    if (transaction.BuyerID === user.UserID && transaction.TransactionStatus === 'Pending') { %>
-      <div>
-        <p>
-          Sua proposta de troca para o livro: "<%= transaction.BookTitle %>" - Status: <%= transaction.TransactionStatus %>
-        </p>
-        <form action="/cancel-trade" method="post">
-          <input type="hidden" name="transactionID" value="<%= transaction.TransactionID %>"/>
-          <button type="submit">Cancelar</button>
-        </form>
-      </div>
-    <% }
-  }); %>
-</div>
+    <div>
+      <% transactions.forEach(function(transaction) {
+        if (transaction.SellerID === user.UserID && transaction.TransactionStatus === 'Pending') { %>
+          <div>
+            <p>
+              Proposta de troca para o livro: "<%= transaction.BookTitle %>" - Status: <%= transaction.TransactionStatus %>
+            </p>
+            <a href="/trade-details/<%= transaction.TransactionID %>" class="btn">Ver Detalhes da Troca</a>
+          </div>
+        <% }
+      }); %>
+    </div>
+    
+    <h2>Suas Trocas</h2>
+    <div>
+      <% transactions.forEach(function(transaction) {
+        if (transaction.BuyerID === user.UserID && transaction.TransactionStatus === 'Pending') { %>
+          <div>
+            <p>
+              Sua proposta de troca para o livro: "<%= transaction.BookTitle %>" - Status: <%= transaction.TransactionStatus %>
+            </p>
+            <a href="/trade-details/<%= transaction.TransactionID %>" class="btn">Ver Detalhes da Troca</a>
+          </div>
+        <% }
+      }); %>
+    </div>
+    
 
     
 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalhes da Troca</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="/" class="btn">Home</a>
+      <% if (user) { %>
+      <a href="/profile" class="btn">Perfil</a>
+      <% } %>
+
+      <a href="/publish-book" class="btn">Publicar Livro</a>
+
+      <% if (!user) { %>
+      <a href="/login" class="btn">Login</a>
+      <a href="/register" class="btn">Registrar</a>
+      <% } %> <% if (user) { %>
+      <a href="/logout" class="btn">Logout</a>
+      <% } %>
+    </nav>
+    <h1>Detalhes da Troca</h1>
+    <div style="display: flex; justify-content: space-around">
+      <div>
+        <h2>Seu Livro Oferecido</h2>
+        <p>Título: <%= transaction.OfferedBookTitle %></p>
+        <p>Autor: <%= transaction.OfferedBookAuthor %></p>
+        <p>Editora: <%= transaction.OfferedBookPublisher %></p>
+        <p>Gênero: <%= transaction.OfferedBookGenre %></p>
+        <img
+          src="<%= transaction.OfferedBookImage %>"
+          alt="Capa do livro oferecido"
+          style="width: 100px"
+        />
+        <p>Condição: <%= transaction.OfferedBookCondition %></p>
+      </div>
+      <div>
+        <h2>Livro Desejado</h2>
+        <p>Título: <%= transaction.RequestedBookTitle %></p>
+        <p>Autor: <%= transaction.RequestedBookAuthor %></p>
+        <p>Editora: <%= transaction.RequestedBookPublisher %></p>
+        <p>Gênero: <%= transaction.RequestedBookGenre %></p>
+        <img
+          src="<%= transaction.RequestedBookImage %>"
+          alt="Capa do livro desejado"
+          style="width: 100px"
+        />
+        <p>Condição: <%= transaction.RequestedBookCondition %></p>
+      </div>
+    </div>
+    <form
+      action="/respond-to-trade/<%= transaction.TransactionID %>"
+      method="post"
+    >
+      <button type="submit" name="response" value="accept">Aceitar</button>
+      <button type="submit" name="response" value="reject">Recusar</button>
+    </form>
+  </body>
+</html>
