@@ -57,6 +57,12 @@ h2 {
 
 /* Parte do login */
 
+body.login-body {
+  background: #070425;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+}
+
 .area-login {
   display: flex;
   height: 100vh;
