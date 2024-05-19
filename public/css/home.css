@@ -17,11 +17,23 @@ body {
   padding: 8px 12px;
   margin-right: 10px;
   border-radius: 5px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-.navbar a:hover {
-  background-color: #555;
+.nav a:hover {
+  background-color: #b60000;
+  transform: scale(1.05);
+}
+
+h1.bookswap a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s, transform 0.3s;
+}
+
+h1.bookswap a:hover {
+  color: #d10000;
+  transform: scale(1.05);
 }
 
 h1,
@@ -53,6 +65,26 @@ h2 {
 
 .book img {
   height: 350px;
+}
+
+/* Home */
+
+.bg-purple {
+  background-color: #070425 !important;
+}
+
+h1.bookswap {
+  color: white;
+}
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+header h1 {
+  margin: 0;
 }
 
 /* Parte do login */
@@ -149,4 +181,97 @@ a:hover {
   100% {
     transform: scale(1.7);
   }
+}
+
+/*  TELA DE CADASTRO */
+.informacao {
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 14px;
+  border: none;
+  width: 100%;
+  gap: 9px;
+  margin-top: 10px;
+}
+.informacao > input {
+  background: #38327b;
+  outline: none;
+  width: auto;
+  height: 38px;
+  border-radius: 8px;
+  padding-left: 10px;
+}
+.informacao > input:hover {
+  background: #464284;
+}
+.tipos {
+  background: #38327b;
+  color: #6d6a93;
+
+  border-radius: 8px;
+  width: 100%;
+  height: 25px;
+  margin-top: 10px;
+
+  border-radius: 8px;
+  width: 100%;
+  height: 38px;
+  font-size: 14px;
+  outline: none;
+}
+.tipos:hover {
+  background: #464284;
+}
+.area-cadastro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cadastro {
+  background: rgb(7, 3, 22);
+  margin-top: 100px;
+  margin-right: 220px;
+
+  align-items: center;
+  padding: 40px;
+  width: 450px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+h2 {
+  text-transform: uppercase;
+  color: #e9e8f0;
+  margin-top: 5px;
+}
+.salva {
+  background: #310ebf;
+
+  margin-top: 12px;
+  display: block;
+  color: #8480ad;
+  width: 100%;
+  height: 45px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-size: 25px;
+  font-weight: bold;
+}
+.salva:hover {
+  background: #242979;
+}
+.cadastro input {
+  margin-top: 20px;
+  background-color: #42308a;
+  color: #e3e1e9;
+
+  padding-left: 0.625rem;
+  border: none;
+  height: 2.813rem;
+  outline: none;
+  border-radius: 8px;
 }
