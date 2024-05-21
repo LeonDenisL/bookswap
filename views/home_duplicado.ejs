@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookSwap - Home</title>
+    <link rel="stylesheet" href="/css/home.css" />
+    <link rel="stylesheet" href="/css/carousel.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="/js/carousel.js"></script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="/" class="btn">Home</a>
+      <% if (user) { %>
+      <a href="/profile" class="btn">Perfil</a>
+      <% } %>
+
+      <a href="/publish-book" class="btn">Publicar Livro</a>
+
+      <% if (!user) { %>
+      <a href="/login" class="btn">Login</a>
+      <a href="/register" class="btn">Registrar</a>
+      <% } %> <% if (user) { %>
+      <a href="/logout" class="btn">Logout</a>
+      <% } %>
+    </nav>
+
+    <h1>Bem-vindo ao BookSwap!</h1>
+
+    <!-- Categoria de Novos Livros -->
+    <section class="new-books">
+      <h2>Novos Livros</h2>
+      <div class="books">
+        <% if (newBooks.length > 0) { %> <% newBooks.forEach(function(book) { %>
+        <div class="book">
+          <a href="/book-details/<%= book.BookID %>">
+            <!-- Adicionando link para detalhes do livro -->
+            <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
+            <h3><%= book.Title %></h3>
+            <p>Autor: <%= book.Author %></p>
+            <p>Editora: <%= book.Publisher %></p>
+          </a>
+        </div>
+        <% }); %> <% } else { %>
+        <p>Nenhum livro novo disponível no momento.</p>
+        <% } %>
+      </div>
+    </section>
+
+    <!-- Categoria Combina com Você -->
+    <section class="recommended-books">
+      <h2>Combina com Você</h2>
+      <div class="books">
+        <% if (recommendedBooks.length > 0) { %> <%
+        recommendedBooks.forEach(function(book) { %>
+        <div class="book">
+          <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
+          <h3><%= book.Title %></h3>
+          <p>Autor: <%= book.Author %></p>
+          <p>Editora: <%= book.Publisher %></p>
+          <!-- Adicione mais detalhes conforme necessário -->
+        </div>
+        <% }); %> <% } else { %>
+        <p>Nenhum livro recomendado disponível no momento.</p>
+        <% } %>
+      </div>
+    </section>
+
+    <!-- Carrossel de Livros -->
+    <section class="carousel-section">
+      <h2>Carrossel de Livros</h2>
+      <div class="carousel">
+        <% carouselBooks.forEach(book => { %>
+        <div class="carousel-item">
+          <div class="carousel-item-image">
+            <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
+          </div>
+          <div class="carousel-item-info">
+            <h3><%= book.Title %></h3>
+            <p>Autor: <%= book.Author %></p>
+            <p>Sinopse: <%= book.Synopsis %></p>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+      <div>
+        <!-- Adicione um carrossel com os últimos 5 livros -->
+        <% if (carouselBooks.length > 0) { %>
+        <!-- Exiba os livros do carrossel aqui -->
+        <% } else { %>
+        <p>Nenhum livro disponível para o carrossel.</p>
+        <% } %>
+      </div>
+    </section>
+  </body>
+</html>
