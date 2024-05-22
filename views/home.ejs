@@ -5,24 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BookSwap - Home</title>
     <link rel="stylesheet" href="/css/home.css" />
-    <link rel="stylesheet" href="/css/carousel.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css"
-    />
     <link
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
   </head>
   <body>
     <header class="bg-purple text-white py-3">
@@ -62,7 +51,6 @@
         </nav>
       </div>
     </header>
-
     <section class="intro bg-purple text-white text-center py-5" id="inicio">
       <div class="container2">
         <h2>Bem-vindo ao BookSwap</h2>
@@ -72,7 +60,46 @@
         </p>
       </div>
     </section>
-
+    <!-- Categoria de Novos Livros -->
+    <section class="books py-5" id="trocar">
+      <div class="container">
+        <h2 class="text-center mb-5">Novos Livros Disponíveis</h2>
+        <div class="books">
+          <% if (newBooks.length > 0) { %> <% newBooks.forEach(function(book) {
+          %>
+          <div class="book">
+            <a href="/book-details/<%= book.BookID %>">
+              <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
+              <h3><%= book.Title %></h3>
+              <p>Autor: <%= book.Author %></p>
+              <p>Editora: <%= book.Publisher %></p>
+            </a>
+          </div>
+          <% }); %> <% } else { %>
+          <p>Nenhum livro novo disponível no momento.</p>
+          <% } %>
+        </div>
+      </div>
+    </section>
+    <!-- Categoria Combina com Você -->
+    <section class="recommended-books books py-5" id="trocar">
+      <div class="container">
+        <h2 class="text-center mb-5">Combina com Você</h2>
+        <div class="books">
+          <% if (recommendedBooks.length > 0) { %> <%
+          recommendedBooks.forEach(function(book) { %>
+          <div class="book">
+            <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
+            <h3><%= book.Title %></h3>
+            <p>Autor: <%= book.Author %></p>
+            <p>Editora: <%= book.Publisher %></p>
+          </div>
+          <% }); %> <% } else { %>
+          <p>Nenhum livro recomendado disponível no momento.</p>
+          <% } %>
+        </div>
+      </div>
+    </section>
     <!-- Carrossel de Livros -->
     <section class="carousel-section py-5">
       <div id="bookCarousel" class="carousel slide" data-ride="carousel">
@@ -83,15 +110,15 @@
               class="d-flex align-items-center justify-content-center"
               style="height: 400px"
             >
-              <div class="carousel-item-content d-flex w-75">
-                <div class="carousel-item-image w-50">
+              <div class="carousel-item-content d-flex w-100 mx-auto">
+                <div class="carousel-item-image w-40">
                   <img
                     src="<%= book.CoverImageURL %>"
-                    class="d-block w-100 h-100"
+                    class="d-block img-fluid"
                     alt="<%= book.Title %>"
                   />
                 </div>
-                <div class="carousel-item-info w-50 p-4">
+                <div class="carousel-item-info w-60 p-4">
                   <h3><%= book.Title %></h3>
                   <p><strong>Autor:</strong> <%= book.Author %></p>
                   <p><strong>Sinopse:</strong> <%= book.Synopsis %></p>
@@ -121,47 +148,6 @@
         </a>
       </div>
     </section>
-
-    <!-- Categoria de Novos Livros -->
-    <section class="books py-5" id="trocar">
-      <div class="container">
-        <h2 class="text-center mb-5">Novos Livros Disponíveis</h2>
-        <div class="books">
-          <% if (newBooks.length > 0) { %> <% newBooks.forEach(function(book) {
-          %>
-          <div class="book">
-            <a href="/book-details/<%= book.BookID %>">
-              <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
-              <h3><%= book.Title %></h3>
-              <p>Autor: <%= book.Author %></p>
-              <p>Editora: <%= book.Publisher %></p>
-            </a>
-          </div>
-          <% }); %> <% } else { %>
-          <p>Nenhum livro novo disponível no momento.</p>
-          <% } %>
-        </div>
-      </div>
-    </section>
-
-    <!-- Categoria Combina com Você -->
-    <section class="recommended-books">
-      <h2>Combina com Você</h2>
-      <div class="books">
-        <% if (recommendedBooks.length > 0) { %> <%
-        recommendedBooks.forEach(function(book) { %>
-        <div class="book">
-          <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
-          <h3><%= book.Title %></h3>
-          <p>Autor: <%= book.Author %></p>
-          <p>Editora: <%= book.Publisher %></p>
-        </div>
-        <% }); %> <% } else { %>
-        <p>Nenhum livro recomendado disponível no momento.</p>
-        <% } %>
-      </div>
-    </section>
-
     <footer class="bg-dark text-white text-center py-3">
       <div class="container">
         <p>&copy; 2024 BookSwap. Todos os direitos reservados.</p>
