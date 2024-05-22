@@ -1,5 +1,4 @@
 /* Estilos para o layout da página */
-
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -48,14 +47,14 @@ h2 {
 /* Estilos para os livros */
 .books {
   display: flex;
-  flex-wrap: wrap; /* Permite a quebra de linha */
-  gap: 20px; /* Espaço entre os cards */
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .book {
-  flex: 1 1 calc(20% - 20px); /* Ajusta a largura dos cards */
+  flex: 1 1 calc(20% - 20px);
   max-width: calc(20% - 20px);
-  margin-bottom: 20px; /* Espaço na parte inferior */
+  margin-bottom: 20px;
   padding: 10px;
   background-color: #f9f9f9;
   border: 2px solid #070425;
@@ -70,9 +69,9 @@ h2 {
 }
 
 .book img {
-  max-height: 200px; /* Ajuste conforme necessário */
-  width: 100%; /* Garante que a imagem ocupe toda a largura do card */
-  object-fit: contain; /* Ajusta a imagem dentro do card sem distorção */
+  max-height: 200px;
+  width: 100%;
+  object-fit: contain;
   border-radius: 10px 10px 0 0;
 }
 
@@ -102,6 +101,7 @@ h4 {
 h1.bookswap {
   color: white;
 }
+
 header .container {
   display: flex;
   justify-content: space-between;
@@ -126,6 +126,7 @@ header h1 {
 .favorites .container {
   max-width: 1200px;
 }
+
 .container2 h2,
 p {
   color: #f5f5f5 !important;
@@ -176,11 +177,7 @@ body.login-body {
 .login img {
   width: 70px;
   height: auto;
-  animation: imagem;
-  animation-duration: 5s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+  animation: imagem 5s ease-in-out infinite alternate;
 }
 
 input::placeholder {
@@ -188,6 +185,7 @@ input::placeholder {
   font-size: 14px;
   font-weight: 5px;
 }
+
 form [type="submit"] {
   display: block;
   align-items: center;
@@ -196,20 +194,25 @@ form [type="submit"] {
   text-transform: uppercase;
   font-weight: bold;
 }
+
 p {
   color: #7e72b7;
 }
+
 a {
   color: #575194;
   text-decoration: none;
   margin-left: 10px;
 }
+
 a:hover {
   color: #9a96c7;
 }
+
 .entra {
   cursor: pointer;
 }
+
 .entra:hover {
   background: #242979;
 }
@@ -223,7 +226,7 @@ a:hover {
   }
 }
 
-/*  TELA DE CADASTRO */
+/* TELA DE CADASTRO */
 .informacao {
   color: white;
   display: flex;
@@ -235,6 +238,7 @@ a:hover {
   gap: 9px;
   margin-top: 10px;
 }
+
 .informacao > input {
   background: #38327b;
   outline: none;
@@ -243,9 +247,11 @@ a:hover {
   border-radius: 8px;
   padding-left: 10px;
 }
+
 .informacao > input:hover {
   background: #464284;
 }
+
 .tipos {
   background: #02027b;
   color: #6d6a93;
@@ -259,14 +265,17 @@ a:hover {
   font-size: 14px;
   outline: none;
 }
+
 .tipos:hover {
   background: #464284;
 }
+
 .area-cadastro {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .cadastro {
   background: rgb(7, 3, 22);
   margin-top: 100px;
@@ -285,6 +294,7 @@ a:hover {
   color: #e9e8f0 !important;
   margin-top: 5px;
 }
+
 .salva {
   background: #310ebf;
   margin-top: 12px;
@@ -297,9 +307,11 @@ a:hover {
   font-size: 25px;
   font-weight: bold;
 }
+
 .salva:hover {
   background: #242979;
 }
+
 .cadastro input {
   margin-top: 20px;
   background-color: #42308a;
@@ -309,4 +321,60 @@ a:hover {
   height: 2.813rem;
   outline: none;
   border-radius: 8px;
+}
+
+/* Estilos para o carrossel */
+.carousel {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.carousel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #fff;
+  border: 2px solid #070425;
+  border-radius: 10px;
+}
+
+.carousel-item-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.carousel-item-image {
+  flex: 0 0 40%;
+  text-align: center;
+}
+
+.carousel-item-image img {
+  max-height: 400px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.carousel-item-info {
+  flex: 1;
+  padding-left: 20px;
+}
+
+.carousel-item-info h3 {
+  margin-top: 0;
+  font-size: 1.5em;
+}
+
+.carousel-item-info p {
+  font-size: 1em;
+  color: #333;
+}
+
+.carousel-section p,
+h2,
+h3,
+h1 {
+  color: #070425 !important;
 }
