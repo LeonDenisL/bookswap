@@ -213,7 +213,7 @@ app.post("/trade-book", (req, res) => {
                 console.error("Erro ao registrar a troca:", err);
                 return res.status(500).send("Erro ao registrar a troca");
               }
-              res.send("Proposta de troca enviada com sucesso!");
+              res.redirect("/profile"); // Redireciona para a página inicial após o registro bem-sucedido do livro
             }
           );
         }
@@ -312,7 +312,7 @@ app.post("/register", (req, res) => {
       res.status(500).send("Erro ao cadastrar usuário");
       return;
     }
-    res.status(200).send("Usuário cadastrado com sucesso");
+    res.redirect("/"); // Redireciona para a página inicial após o registro bem-sucedido do livro
   });
 });
 
@@ -436,6 +436,20 @@ app.post("/respond-to-trade/:transactionID", (req, res) => {
       res.redirect("/profile"); // Redirecione conforme necessário
     }
   );
+});
+
+app.get("/all-books", (req, res) => {
+  connection.query("SELECT * FROM Books", (err, books) => {
+    if (err) {
+      console.error("Erro ao buscar livros:", err);
+      res.status(500).send("Erro ao carregar a página de livros");
+      return;
+    }
+    res.render("all-books", {
+      books,
+      user: req.session.UserID ? { UserID: req.session.UserID } : null,
+    });
+  });
 });
 
 // Iniciar o servidor

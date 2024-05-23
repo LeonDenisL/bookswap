@@ -3,9 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Detalhes do Livro</title>
+    <title>Todos os Livros Publicados</title>
     <link rel="stylesheet" href="/css/home.css" />
-    <link rel="stylesheet" href="/css/book-details.css" />
     <link
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       rel="stylesheet"
@@ -51,44 +50,20 @@
         </nav>
       </div>
     </header>
-    <div class="container book-details-container">
-      <h1 class="text-center my-5">Detalhes do Livro</h1>
-      <div class="book-details">
-        <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
-        <div class="book-info">
-          <h2><%= book.Title %></h2>
-          <p><strong>Autor:</strong> <%= book.Author %></p>
-          <p><strong>Editora:</strong> <%= book.Publisher %></p>
-          <p><strong>Ano de Publicação:</strong> <%= book.PublicationYear %></p>
-          <p><strong>Condição:</strong> <%= book.BookCondition %></p>
-          <p><strong>Sinopse:</strong> <%= book.Synopsis %></p>
+    <div class="container my-5">
+      <h1 class="text-center">Todos os Livros Publicados</h1>
+      <div class="books mt-4">
+        <% books.forEach(function(book) { %>
+        <div class="book">
+          <a href="/book-details/<%= book.BookID %>">
+            <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
+            <h3><%= book.Title %></h3>
+            <p>Autor: <%= book.Author %></p>
+            <p>Editora: <%= book.Publisher %></p>
+          </a>
         </div>
+        <% }); %>
       </div>
-
-      <% if (userBooks.length > 0) { %>
-      <h2 class="text-center my-4">Selecione um livro para trocar:</h2>
-      <form action="/trade-book" method="post" class="trade-form">
-        <div class="form-group">
-          <select name="offeredBookID" class="form-control">
-            <% userBooks.forEach(function(book) { %>
-            <option value="<%= book.BookID %>"><%= book.Title %></option>
-            <% }); %>
-          </select>
-        </div>
-        <!-- Certifique-se de enviar também o ID do livro atual -->
-        <input
-          type="hidden"
-          name="requestedBookID"
-          value="<%= book.BookID %>"
-        />
-        <button type="submit" class="btn btn-primary">Propor Troca</button>
-      </form>
-      <% } else { %>
-      <p class="text-center">
-        Você não tem livros para trocar.
-        <a href="/publish-book" class="btn btn-link">Publicar um livro</a>
-      </p>
-      <% } %>
     </div>
     <footer class="bg-dark text-white text-center py-3">
       <div class="container">
