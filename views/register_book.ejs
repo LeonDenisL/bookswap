@@ -1,70 +1,105 @@
 <!DOCTYPE html>
-<html lang="PT-BR">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BookSwap - Register Book</title>
     <link rel="stylesheet" href="/css/home.css" />
-    <link rel="stylesheet" href="/css/carousel.css" />
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </head>
-  <body>
-    <nav class="navbar">
-      <a href="/" class="btn">Home</a>
-      <% if (user) { %>
-      <a href="/profile" class="btn">Perfil</a>
-      <% } %>
-
-      <a href="/publish-book" class="btn">Publicar Livro</a>
-
-      <% if (!user) { %>
-      <a href="/login" class="btn">Login</a>
-      <a href="/register" class="btn">Registrar</a>
-      <% } %> <% if (user) { %>
-      <a href="/logout" class="btn">Logout</a>
-      <% } %>
-    </nav>
-    <h2>Register a Book</h2>
-    <form action="/register-book" method="POST">
-      <div>
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required />
+  <body class="login-body">
+    <header class="bg-purple text-white py-3">
+      <div class="container d-flex justify-content-between align-items-center">
+        <h1 class="bookswap"><a href="/">BookSwap</a></h1>
+        <nav>
+          <ul class="nav">
+            <% if (user) { %>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/profile">Perfil</a>
+            </li>
+            <% } %>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/publish-book"
+                >Publicar Livro</a
+              >
+            </li>
+            <% if (!user) { %>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/register">Registrar</a>
+            </li>
+            <% } %> <% if (user) { %>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/logout">Logout</a>
+            </li>
+            <% } %>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/all-books"
+                >Todos os Livros</a
+              >
+            </li>
+          </ul>
+        </nav>
       </div>
-      <div>
-        <label for="author">Author:</label>
-        <input type="text" id="author" name="author" required />
+    </header>
+    <div class="book-register-area">
+      <section class="book-register">
+        <h2>Registrar Livro</h2>
+        <form action="/register-book" method="POST" class="book-register-form">
+          <div>
+            <label for="title">Título:</label>
+            <input type="text" id="title" name="title" required />
+          </div>
+          <div>
+            <label for="author">Autor:</label>
+            <input type="text" id="author" name="author" required />
+          </div>
+          <div>
+            <label for="publisher">Editora:</label>
+            <input type="text" id="publisher" name="publisher" />
+          </div>
+          <div>
+            <label for="publicationYear">Ano de Publicação:</label>
+            <input type="number" id="publicationYear" name="publicationYear" />
+          </div>
+          <div>
+            <label for="genre">Gênero:</label>
+            <input type="text" id="genre" name="genre" />
+          </div>
+          <div>
+            <label for="synopsis">Sinopse:</label>
+            <textarea id="synopsis" name="synopsis" required></textarea>
+          </div>
+          <div>
+            <label for="condition">Condição:</label>
+            <select id="condition" name="condition" required>
+              <option value="New">Novo</option>
+              <option value="Like New">Como Novo</option>
+              <option value="Good">Bom</option>
+              <option value="Acceptable">Aceitável</option>
+              <option value="Degraded">Degradado</option>
+            </select>
+          </div>
+          <div>
+            <label for="coverImageURL">URL da Imagem de Capa:</label>
+            <input type="text" id="coverImageURL" name="coverImageURL" />
+          </div>
+          <button type="submit">Registrar</button>
+        </form>
+      </section>
+    </div>
+    <footer class="bg-dark text-white text-center py-3">
+      <div class="container">
+        <p>&copy; 2024 BookSwap. Todos os direitos reservados.</p>
       </div>
-      <div>
-        <label for="publisher">Publisher:</label>
-        <input type="text" id="publisher" name="publisher" />
-      </div>
-      <div>
-        <label for="publicationYear">Publication Year:</label>
-        <input type="number" id="publicationYear" name="publicationYear" />
-      </div>
-      <div>
-        <label for="genre">Genre:</label>
-        <input type="text" id="genre" name="genre" />
-      </div>
-      <div>
-        <label for="synopsis">Synopsis:</label>
-        <textarea id="synopsis" name="synopsis" required></textarea>
-      </div>
-      <div>
-        <label for="condition">Condition:</label>
-        <select id="condition" name="condition" required>
-          <option value="New">New</option>
-          <option value="Like New">Like New</option>
-          <option value="Good">Good</option>
-          <option value="Acceptable">Acceptable</option>
-          <option value="Degraded">Degraded</option>
-          <!-- Supondo que "Degraded" seja um valor válido -->
-        </select>
-      </div>
-      <div>
-        <label for="coverImageURL">Cover Image URL:</label>
-        <input type="text" id="coverImageURL" name="coverImageURL" />
-      </div>
-      <button type="submit">Register</button>
-    </form>
+    </footer>
   </body>
 </html>

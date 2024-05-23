@@ -25,34 +25,27 @@
               <a class="nav-link text-white" href="/profile">Perfil</a>
             </li>
             <% } %>
-
             <li class="nav-item">
               <a class="nav-link text-white" href="/publish-book"
                 >Publicar Livro</a
               >
             </li>
-
             <% if (!user) { %>
-
             <li class="nav-item">
               <a class="nav-link text-white" href="/login">Login</a>
             </li>
-
             <li class="nav-item">
               <a class="nav-link text-white" href="/register">Registrar</a>
             </li>
-
             <% } %> <% if (user) { %>
             <li class="nav-item">
               <a class="nav-link text-white" href="/logout">Logout</a>
             </li>
             <% } %>
-
             <li class="nav-item">
-              <a class="nav-link text-white" href="#sobre">Sobre</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-white" href="#contato">Contato</a>
+              <a class="nav-link text-white" href="/all-books"
+                >Todos os Livros</a
+              >
             </li>
           </ul>
         </nav>

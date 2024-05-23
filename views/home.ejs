@@ -42,10 +42,17 @@
             </li>
             <% } %>
             <li class="nav-item">
-              <a class="nav-link text-white" href="#sobre">Sobre</a>
+              <a class="nav-link text-white" href="/all-books"
+                >Todos os Livros</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="#contato">Contato</a>
+              <a class="nav-link text-white" href="#novos">Novos Livros</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#combina"
+                >Combina com você</a
+              >
             </li>
           </ul>
         </nav>
@@ -62,7 +69,7 @@
     </section>
     <!-- Categoria de Novos Livros -->
     <section class="books py-5" id="trocar">
-      <div class="container">
+      <div class="container" id="novos">
         <h2 class="text-center mb-5">Novos Livros Disponíveis</h2>
         <div class="books">
           <% if (newBooks.length > 0) { %> <% newBooks.forEach(function(book) {
@@ -83,16 +90,18 @@
     </section>
     <!-- Categoria Combina com Você -->
     <section class="recommended-books books py-5" id="trocar">
-      <div class="container">
+      <div class="container" id="combina">
         <h2 class="text-center mb-5">Combina com Você</h2>
         <div class="books">
           <% if (recommendedBooks.length > 0) { %> <%
           recommendedBooks.forEach(function(book) { %>
           <div class="book">
-            <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
-            <h3><%= book.Title %></h3>
-            <p>Autor: <%= book.Author %></p>
-            <p>Editora: <%= book.Publisher %></p>
+            <a href="/book-details/<%= book.BookID %>">
+              <img src="<%= book.CoverImageURL %>" alt="<%= book.Title %>" />
+              <h3><%= book.Title %></h3>
+              <p>Autor: <%= book.Author %></p>
+              <p>Editora: <%= book.Publisher %></p>
+            </a>
           </div>
           <% }); %> <% } else { %>
           <p>Nenhum livro recomendado disponível no momento.</p>

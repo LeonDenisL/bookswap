@@ -25,93 +25,85 @@
               <a class="nav-link text-white" href="/profile">Perfil</a>
             </li>
             <% } %>
-
             <li class="nav-item">
               <a class="nav-link text-white" href="/publish-book"
                 >Publicar Livro</a
               >
             </li>
-
             <% if (!user) { %>
-
             <li class="nav-item">
               <a class="nav-link text-white" href="/login">Login</a>
             </li>
-
             <li class="nav-item">
               <a class="nav-link text-white" href="/register">Registrar</a>
             </li>
-
             <% } %> <% if (user) { %>
             <li class="nav-item">
               <a class="nav-link text-white" href="/logout">Logout</a>
             </li>
             <% } %>
-
             <li class="nav-item">
-              <a class="nav-link text-white" href="#sobre">Sobre</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-white" href="#contato">Contato</a>
+              <a class="nav-link text-white" href="/all-books"
+                >Todos os Livros</a
+              >
             </li>
           </ul>
         </nav>
       </div>
     </header>
-    <div class="area-cadastro">
-      <section class="cadastro">
-        <h2>Cadastre-se</h2>
-        <form action="/register" method="POST" class="informacao">
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Nome e Sobrenome"
-            required
-          />
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="E-mail"
-            required
-          />
-
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="senha"
-            required
-          />
-
-          <input
-            type="text"
-            id="address"
-            name="address"
-            placeholder="Endereço completo"
-          />
-
-          <input
-            type="text"
-            id="contactInfo"
-            name="contactInfo"
-            placeholder="digite seu telefone"
-          />
-
-          <label for="favoriteGenre">Genero Favorito:</label>
-          <select class="tipos" id="favoriteGenre" name="favoriteGenre">
-            <option value="romance">Romance</option>
-            <option value="estudo">Estudo</option>
-            <option value="fantasia">Fantasia</option>
-            <option value="ficcao">Ficção</option>
-          </select>
-
-          <button class="salva" type="submit">CADASTRAR</button>
-        </form>
-      </section>
-      <div class="imagem">
-        <img src="img/logoo.png" alt="logo" />
+    <div class="container area-cadastro">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-md-6">
+          <section class="cadastro">
+            <h2>Cadastre-se</h2>
+            <form action="/register" method="POST" class="informacao">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Nome e Sobrenome"
+                required
+              />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="E-mail"
+                required
+              />
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Senha"
+                required
+              />
+              <input
+                type="text"
+                id="address"
+                name="address"
+                placeholder="Endereço completo"
+              />
+              <input
+                type="text"
+                id="contactInfo"
+                name="contactInfo"
+                placeholder="Digite seu telefone"
+              />
+              <label for="favoriteGenre">Gênero Favorito:</label>
+              <select class="tipos" id="favoriteGenre" name="favoriteGenre">
+                <option value="romance">Romance</option>
+                <option value="estudo">Estudo</option>
+                <option value="fantasia">Fantasia</option>
+                <option value="ficcao">Ficção</option>
+              </select>
+              <button class="salva" type="submit">Cadastrar</button>
+            </form>
+          </section>
+        </div>
+        <div class="col-md-6 text-center">
+          <img src="/img/logoo.png" alt="logo" class="img-fluid" />
+        </div>
       </div>
     </div>
     <footer class="bg-dark text-white text-center py-3">

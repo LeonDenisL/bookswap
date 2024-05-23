@@ -136,12 +136,12 @@ p {
 body.login-body {
   background: #070425;
   font-family: Arial, Helvetica, sans-serif;
-  overflow: hidden;
+  overflow-y: auto; /* Permitir rolagem vertical */
 }
 
 .area-login {
   display: flex;
-  height: 100vh;
+  min-height: 100vh; /* Garantir altura mínima */
   justify-content: center;
   align-items: center;
 }
@@ -274,45 +274,29 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px; /* Adiciona preenchimento */
 }
 
 .cadastro {
   background: rgb(7, 3, 22);
-  margin-top: 100px;
-  margin-right: 220px;
-  align-items: center;
+  margin-top: 40px;
   padding: 40px;
-  width: 450px;
-  height: 650px;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  border-radius: 10px;
 }
 
 .cadastro > h2 {
   text-transform: uppercase;
   color: #e9e8f0 !important;
-  margin-top: 5px;
+  margin-bottom: 20px;
 }
 
-.salva {
-  background: #310ebf;
-  margin-top: 12px;
-  display: block;
-  color: #e9e8f0;
-  width: 100%;
-  height: 45px;
-  border-radius: 8px;
-  text-transform: uppercase;
-  font-size: 25px;
-  font-weight: bold;
-}
-
-.salva:hover {
-  background: #242979;
-}
-
-.cadastro input {
+.cadastro input,
+.cadastro select,
+.cadastro textarea {
   margin-top: 20px;
   background-color: #42308a;
   color: #e3e1e9;
@@ -321,6 +305,35 @@ a:hover {
   height: 2.813rem;
   outline: none;
   border-radius: 8px;
+}
+
+.cadastro textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.cadastro input:hover,
+.cadastro select:hover,
+.cadastro textarea:hover {
+  background: #464284;
+}
+
+.salva {
+  background: #310ebf;
+  margin-top: 20px;
+  display: block;
+  color: #e9e8f0;
+  width: 100%;
+  height: 55px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-size: 25px;
+  font-weight: bold;
+  border: none;
+}
+
+.salva:hover {
+  background: #242979;
 }
 
 /* Estilos para o carrossel */
@@ -378,4 +391,386 @@ h2,
 h3,
 h1 {
   color: #070425 !important;
+}
+
+/* CSS para a página de cadastro de livros */
+.book-register-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+.book-register {
+  background: rgb(7, 3, 22);
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.book-register > h2 {
+  text-transform: uppercase;
+  color: #e9e8f0 !important;
+  margin-bottom: 20px;
+}
+
+.book-register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.book-register-form > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.book-register-form > div > label {
+  margin-bottom: 5px;
+  color: #e9e8f0;
+}
+
+.book-register-form > input,
+.book-register-form select,
+.book-register-form textarea {
+  background: #38327b;
+  outline: none;
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  padding-left: 10px;
+  color: #e3e1e9;
+  border: none;
+}
+
+.book-register-form textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+.book-register-form > input:hover,
+.book-register-form select:hover,
+.book-register-form textarea:hover {
+  background: #464284;
+}
+
+.book-register-form button {
+  background: #310ebf;
+  margin-top: 20px;
+  display: block;
+  color: #e9e8f0;
+  width: 100%;
+  height: 55px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-size: 25px;
+  font-weight: bold;
+  border: none;
+}
+
+.book-register-form button:hover {
+  background: #242979;
+}
+.book-register-form input {
+  width: 100%;
+  height: 40px;
+}
+
+/* CSS para a página de detalhes do livro */
+.book-details-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-details {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.book-details img {
+  max-width: 200px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.book-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.book-info h2 {
+  margin-top: 0;
+  font-size: 1.5em;
+  color: #070425;
+}
+
+.book-info p {
+  margin: 5px 0;
+  color: #333;
+}
+
+.trade-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.trade-form .form-group {
+  margin-bottom: 20px;
+}
+
+.trade-form select {
+  height: 40px;
+  border-radius: 8px;
+  padding: 0 10px;
+  background-color: #42308a;
+  color: #e3e1e9;
+  border: none;
+  outline: none;
+}
+
+.trade-form button {
+  background-color: #310ebf;
+  color: #e9e8f0;
+  border: none;
+  border-radius: 8px;
+  height: 40px;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.trade-form button:hover {
+  background-color: #242979;
+}
+
+.book-details p {
+  color: #070425 !important;
+}
+
+/* CSS para a página de perfil */
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-pic {
+  width: 150px;
+  height: auto;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.update-pic-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.update-pic-form .form-group {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.update-pic-form input {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  padding-left: 10px;
+  background: #38327b;
+  color: #e3e1e9;
+  border: none;
+  outline: none;
+}
+
+.update-pic-form button {
+  background: #310ebf;
+  color: #e9e8f0;
+  border: none;
+  border-radius: 8px;
+  height: 40px;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.update-pic-form button:hover {
+  background: #242979;
+}
+
+.books {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.book {
+  flex: 1 1 calc(33.333% - 20px);
+  background-color: #f9f9f9;
+  border: 2px solid #070425;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  padding: 10px;
+}
+
+.book:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.book img {
+  max-height: 150px;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 10px 10px 0 0;
+}
+
+.book h3 {
+  margin: 10px 0;
+  font-size: 1.2em;
+}
+
+.book p {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.notifications,
+.trades,
+.trade-history {
+  margin-top: 20px;
+}
+
+.notification,
+.trade,
+.trade-history-item {
+  background-color: #f9f9f9;
+  border: 2px solid #070425;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notification p,
+.trade p,
+.trade-history-item p {
+  margin: 0 0 10px;
+  color: #333;
+}
+
+.notification .btn,
+.trade .btn {
+  background: #310ebf;
+  color: #e9e8f0;
+  border: none;
+  border-radius: 8px;
+  height: 40px;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.notification .btn:hover,
+.trade .btn:hover {
+  background: #242979;
+}
+
+.trade p {
+  color: #070425 !important;
+}
+
+.trade-history p {
+  color: #070425 !important;
+}
+.notification p {
+  color: #070425 !important;
+}
+
+/* CSS para a página de detalhes da troca */
+.trade-details-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-details {
+  background-color: #f9f9f9;
+  border: 2px solid #070425;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-details h2 {
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  color: #070425;
+}
+
+.book-details p {
+  font-size: 1em;
+  color: #333;
+  margin: 5px 0;
+}
+
+.book-image {
+  max-width: 100%;
+  margin: 10px 0;
+  border-radius: 10px;
+}
+
+.response-form {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.response-form .btn {
+  width: 150px;
+  height: 45px;
+  font-size: 1em;
+}
+
+.response-form .btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.response-form .btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
 }
