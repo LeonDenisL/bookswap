@@ -60,4 +60,11 @@ CREATE TABLE Categories (
     CategoryDescription TEXT
 );
 
+ALTER TABLE Users ADD COLUMN ProfilePictureURL VARCHAR(255) DEFAULT 'https://static.vecteezy.com/ti/vetor-gratis/p1/14554760-foto-negativa-do-perfil-do-homem-silhueta-anonima-cabeca-humana-empresario-trabalhador-apoio-ilustracaoial-vetor.jpg';
 
+SELECT * FROM Books WHERE BookID IN (SELECT BookID FROM Transactions);
+
+SELECT t.*, b.Title AS BookTitle
+FROM Transactions t
+JOIN Books b ON t.BookID = b.BookID
+WHERE t.BuyerID = ? OR t.SellerID = ?;
