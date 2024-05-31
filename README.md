@@ -17,7 +17,7 @@ O sistema de troca de livros BookSwap Online é uma plataforma online que facili
 
 # Criar banco de dados
 
-Certifique-se que tenha o MySQL baixado
+Certifique-se que tenha o MySQL baixado.
 OBS: Nesse passo utilizamos o MySQL Workbench
 
 - 1.  **Executar bookswap.sql:** Pegar o arquivo na raiz bookwap.sql e realizar todas as querys dele para criar o banco de dados necessario, lembrando que nele possui varias querys, devem ser executadas uma a uma em ordem
