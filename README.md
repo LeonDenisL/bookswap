@@ -1,6 +1,6 @@
 # bookswap
 
-BookSwap um projeto criado para o projeto interdisciplinar de ADS da UNIPE e também em conjunto com o da disciplina de aplicações WEB.
+BookSwap um projeto criado para o projeto interdisciplinar de ADS da UNIPE.
 
 O sistema de troca de livros BookSwap Online é uma plataforma online que facilita a troca de livros entre usuários registrados. O objetivo principal do sistema é promover o compartilhamento de conhecimento e a leitura, permitindo que os usuários publiquem livros que desejam trocar e proponham trocas com outros usuários. O sistema oferece uma série de funcionalidades para gerenciar perfis de usuários, livros publicados, propostas de troca e recomendações de leitura.
 
