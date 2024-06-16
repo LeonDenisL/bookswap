@@ -62,3 +62,4 @@ CREATE TABLE Categories (
 
 ALTER TABLE Users ADD COLUMN ProfilePictureURL VARCHAR(255) DEFAULT 'https://static.vecteezy.com/ti/vetor-gratis/p1/14554760-foto-negativa-do-perfil-do-homem-silhueta-anonima-cabeca-humana-empresario-trabalhador-apoio-ilustracaoial-vetor.jpg';
 
+ALTER TABLE Transactions ADD COLUMN TradeBookID INT;
